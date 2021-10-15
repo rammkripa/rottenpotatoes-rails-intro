@@ -16,9 +16,9 @@
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <th><%= link_to "Movie Title", movies_path(:sort_by => {:title => true}, :ratings => Hash[@ratings_to_show.collect { |v| [v, 1] }]), class: "hilite" + @title_class %></th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th><%= link_to "Release Date", movies_path(:sort_by => {:release_date => true}, :ratings => Hash[@ratings_to_show.collect { |v| [v, 1] }]), class: "hilite" + @release_class %></th>
       <th>More Info</th>
     </tr>
   </thead>
