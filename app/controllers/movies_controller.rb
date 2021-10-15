@@ -16,14 +16,17 @@ class MoviesController < ApplicationController
     movies_to_display = Movie.with_ratings(@ratings_to_show)
     @title_class = ""
     @release_class = ""
-    if params.key?('sort_by')
-      movies_to_display = movies_to_display.order(params[:sort_by].keys)
-      if params[:sort_by].key?('title')
+    if params.key?('sort_by') and (params[:sort_by] != "")
+      @sort_by = params[:sort_by]
+      movies_to_display = movies_to_display.order(params[:sort_by])
+      if params[:sort_by] == 'title'
         @title_class = "p-3 mb-2 bg-warning"
       end
-      if params[:sort_by].key?('release_date')
+      if params[:sort_by] == 'release_date'
         @release_class = "p-3 mb-2 bg-warning"
       end
+    else
+      @sort_by = ""
     end
     @movies = movies_to_display
   end
