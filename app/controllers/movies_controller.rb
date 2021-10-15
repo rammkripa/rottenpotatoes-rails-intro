@@ -10,24 +10,31 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.all_ratings
     if params.key?('ratings')
       @ratings_to_show = params[:ratings].keys
+    elsif session.key?('ratings')
+      @ratings_to_show = session[:ratings].keys
     else
       @ratings_to_show = []
     end
     movies_to_display = Movie.with_ratings(@ratings_to_show)
     @title_class = ""
     @release_class = ""
-    if params.key?('sort_by') and (params[:sort_by] != "")
+    @sort_by = ""
+    if params.key?('sort_by')
       @sort_by = params[:sort_by]
-      movies_to_display = movies_to_display.order(params[:sort_by])
-      if params[:sort_by] == 'title'
+    elsif session.key?('sort_by')
+      @sort_by = session[:sort_by]
+    end
+    if (@sort_by != "")
+      movies_to_display = movies_to_display.order(@sort_by)
+      if @sort_by == 'title'
         @title_class = "p-3 mb-2 bg-warning"
       end
-      if params[:sort_by] == 'release_date'
+      if @sort_by == 'release_date'
         @release_class = "p-3 mb-2 bg-warning"
       end
-    else
-      @sort_by = ""
     end
+    session[:ratings] = Hash[@ratings_to_show.collect { |v| [v, 1] }]
+    session[:sort_by] = @sort_by
     @movies = movies_to_display
   end
 
